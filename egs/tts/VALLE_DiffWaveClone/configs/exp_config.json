@@ -1,0 +1,63 @@
+{
+  "base_config": "config/valle.json",
+  "model_type": "VALLE",
+  "dataset": ["voiceclone"],
+  "dataset_path": {"voiceclone": "data/valle_diffwave_clone/voiceclone"},
+  "preprocess": {
+    "processed_dir": "data/valle_diffwave_clone",
+    "train_file": "train.json",
+    "valid_file": "valid.json",
+    "sample_rate": 24000,
+    "codec_hop_size": 320,
+    "extract_phone": true,
+    "phone_extractor": "espeak",
+    "language": "en-us",
+    "extract_acoustic_token": true,
+    "acoustic_token_extractor": "Encodec",
+    "acoustic_token_dir": "acoutic_tokens",
+    "use_acoustic_token": true,
+    "use_phone": true,
+    "use_spk_embedding": true,
+    "spk_embedding_dir": "speaker_embeddings",
+    "speaker_encoder_source": "speechbrain/spkrec-ecapa-voxceleb",
+    "speaker_encoder_savedir": "pretrained/ecapa_voxceleb",
+    "min_duration": 1.0,
+    "max_duration": 20.0
+  },
+  "model": {
+    "num_quantizers": 8,
+    "audio_token_num": 1024,
+    "speaker_embed_dim": 192,
+    "prefix_mode": 1,
+    "token_diffwave": {
+      "num_quantizers": 8,
+      "codebook_size": 1024,
+      "codec_hop_size": 320,
+      "speaker_embed_dim": 192,
+      "condition_dim": 128,
+      "residual_channels": 64,
+      "residual_layers": 20,
+      "dilation_cycle_length": 10,
+      "train_steps": 50,
+      "beta_start": 0.0001,
+      "beta_end": 0.05
+    }
+  },
+  "train": {
+    "batch_size": 4,
+    "max_epoch": 30,
+    "base_lr": 0.0001,
+    "use_dynamic_batchsize": true,
+    "max_tokens": 4000,
+    "max_sentences": 8
+  },
+  "diffwave_train": {
+    "batch_size": 4,
+    "epochs": 100,
+    "learning_rate": 0.0002,
+    "segment_samples": 38400,
+    "num_workers": 4,
+    "grad_clip": 1.0,
+    "save_every": 1
+  }
+}
